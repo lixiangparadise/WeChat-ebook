@@ -5,6 +5,9 @@ import App from './App'
 import router from './router'
 //引用icon
 import '@/assets/styles/icon.css'
+//引入css
+import '@/assets/styles/global.scss'
+
 
 Vue.config.productionTip = false
 

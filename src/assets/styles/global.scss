@@ -7,6 +7,7 @@ $fontSize: 37.5;
   @return ($px / $fontSize) + rem;
 }
 
+//复用的样式
 @mixin center() {
   display: flex;
   justify-content: center;
