@@ -26,13 +26,11 @@
                 <div class="preview" :style="{fontSize: fontSizeList[0].fontSize + 'px'}">A</div>
                <div class="select">
                    <div class="select-wrapper"  v-for="(item, index) in fontSizeList" 
-                    :key="index">
+                    :key="index" @click="setFontSize(item.fontSize)">
                     <div class="line"></div>
                     <div class="point-warpper">
                         <!-- 显示小球 -->
-                        <div class="point" v-show="defaultFontSize===item.fontSize"
- 
-                        >
+                        <div class="point" v-show="defaultFontSize===item.fontSize">
                             <div class="small-point"></div>
                         </div>
                     </div>
@@ -71,6 +69,11 @@ export default {
         },
         hideSetting(){
             this.ifSettingShow = false
+        },
+        //设置字号小球
+        //使用父级的setFontSize方法并且传递参数
+        setFontSize(fs){
+            this.$emit('setFontSize', fs)
         }
     }
 }

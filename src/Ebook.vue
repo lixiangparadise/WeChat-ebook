@@ -17,6 +17,7 @@
     <menu-bar ref="menuBar" :ifTitleAndMenuShow = "ifTitleAndMenuShow"
                 :fontSizeList = "fontSizeList"
                 :defaultFontSize = "defaultFontSize"
+                @setFontSize = "setFontSize"
     ></menu-bar>
      
  </div>
@@ -52,6 +53,12 @@ global.ePub = Epub
       TitleBar
   },
   methods:{
+      setFontSize(fs){
+          this.defaultFontSize = fs;
+          if(this.themes){
+              this.themes.fontSize(fs+'px')
+          }
+      },
       //点击中间内容区域则触发点击事件显示菜单栏
       toggleTitleAndMenu(){
           this.ifTitleAndMenuShow = !this.ifTitleAndMenuShow,
@@ -84,9 +91,13 @@ global.ePub = Epub
               width: window.innerWidth,
               height: window.innerHeight
           })
-          console.log(this.rendition);
+        //   console.log(this.rendition);
           //3.通过Rendtion.display()渲染电子书
           this.rendition.display();
+          //获取Theme对象
+          this.themes = this.rendition.themes
+          //设置默认字体
+          this.setFontSize(this.defaultFontSize)
       }
   },
   mounted(){
