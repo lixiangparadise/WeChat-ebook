@@ -1,7 +1,8 @@
 <template>
  <div class="ebook">
      <!-- 标题栏 -->
-     <div class="title-wrapper">
+     <transition name="slide-down">
+     <div class="title-wrapper"  v-show="ifTitleAndMenuShow">
          <div class="left">
              <span class="icon-back icon"></span>
          </div>
@@ -17,6 +18,7 @@
              </div>
          </div>
      </div>
+     </transition>
      <!-- 内容 -->
      <div class="read-wrapper">
          <!-- 电子书固定在此id上 -->
@@ -24,12 +26,14 @@
          <!-- 左右进度浮层 -->
          <div class="mask">
              <div class="left" @click="prevPage"></div>
-             <div class="center"></div>
+             <div class="center" @click="toggleTitleAndMenu"></div>
              <div class="right" @click="nextPage"></div>
          </div>
      </div>
+
      <!-- 底部栏 -->
-     <div class="menu-wrapper">
+     <transition name="slide-up">
+     <div class="menu-wrapper" v-show="ifTitleAndMenuShow">
          <div class="icon-wrapper">
              <span class="icon-menu icon"></span>
          </div>
@@ -43,6 +47,7 @@
              <span class="icon-a icon">A</span>
          </div>
      </div>
+     </transition>
  </div>
 </template>
 
@@ -55,10 +60,14 @@ global.ePub = Epub
   name: 'Ebook',
   data(){
       return{
-
+          ifTitleAndMenuShow: false
       }
   },
   methods:{
+      //点击中间内容区域则触发点击事件显示菜单栏
+      toggleTitleAndMenu(){
+          this.ifTitleAndMenuShow = !this.ifTitleAndMenuShow
+      },
       //翻页
       prevPage(){
           //调用rendition.prev上一页
@@ -130,6 +139,20 @@ global.ePub = Epub
                 }
             }
         }
+        // 添加& 表示和title-wrapper是同一级的
+        //等同于title-wrapper:slide-down-enter 作用在同一标签上
+        &.slide-down-enter, &.slide-down-leave-to{
+            // 初始位置
+            transform: translate3d(0, -100%, 0);
+        }
+        &.slide-down-enter-to, &.slide-down-leave{
+            //最终位置
+            transform: translate3d(0, 0, 0);
+        }
+        &.slide-down-enter-active, &.slide-down-leave-active{
+            //过程
+            transition: all, 0.3s linear;
+        }
     }
     .read-wrapper{
         .mask{
@@ -176,6 +199,15 @@ global.ePub = Epub
             .icon-bright {
                 font-size: px2rem(24);
             }
+        }
+        &.slide-up-enter, &.slide-up-leave-to{
+            transform: translate3d(0, 100%, 0);
+        }
+        &.slide-up-enter-to, &.slide-up-leave{
+            transform: translate3d(0, 0, 0);
+        }
+        &.slide-up-enter-active, &.slide-up-leave-active{
+            transition: all, 0.3s linear;
         }
     }
 }
