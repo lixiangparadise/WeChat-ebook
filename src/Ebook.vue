@@ -139,20 +139,20 @@ global.ePub = Epub
                 }
             }
         }
-        // 添加& 表示和title-wrapper是同一级的
-        //等同于title-wrapper:slide-down-enter 作用在同一标签上
-        &.slide-down-enter, &.slide-down-leave-to{
-            // 初始位置
-            transform: translate3d(0, -100%, 0);
-        }
-        &.slide-down-enter-to, &.slide-down-leave{
-            //最终位置
-            transform: translate3d(0, 0, 0);
-        }
-        &.slide-down-enter-active, &.slide-down-leave-active{
-            //过程
-            transition: all, 0.3s linear;
-        }
+        // // 添加& 表示和title-wrapper是同一级的
+        // //等同于title-wrapper:slide-down-enter 作用在同一标签上
+        // &.slide-down-enter, &.slide-down-leave-to{
+        //     // 初始位置
+        //     transform: translate3d(0, -100%, 0);
+        // }
+        // &.slide-down-enter-to, &.slide-down-leave{
+        //     //最终位置
+        //     transform: translate3d(0, 0, 0);
+        // }
+        // &.slide-down-enter-active, &.slide-down-leave-active{
+        //     //过程
+        //     transition: all, 0.3s linear;
+        // }
     }
     .read-wrapper{
         .mask{
@@ -200,15 +200,15 @@ global.ePub = Epub
                 font-size: px2rem(24);
             }
         }
-        &.slide-up-enter, &.slide-up-leave-to{
-            transform: translate3d(0, 100%, 0);
-        }
-        &.slide-up-enter-to, &.slide-up-leave{
-            transform: translate3d(0, 0, 0);
-        }
-        &.slide-up-enter-active, &.slide-up-leave-active{
-            transition: all, 0.3s linear;
-        }
+        // &.slide-up-enter, &.slide-up-leave-to{
+        //     transform: translate3d(0, 100%, 0);
+        // }
+        // &.slide-up-enter-to, &.slide-up-leave{
+        //     transform: translate3d(0, 0, 0);
+        // }
+        // &.slide-up-enter-active, &.slide-up-leave-active{
+        //     transition: all, 0.3s linear;
+        // }
     }
 }
  
