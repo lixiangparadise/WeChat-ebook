@@ -3,7 +3,12 @@
      <div class="read-wrapper">
          <!-- 电子书固定在此id上 -->
          <div id="read"></div>
- 
+         <!-- 左右进度浮层 -->
+         <div class="mask">
+             <div class="left" @click="prevPage"></div>
+             <div class="center"></div>
+             <div class="right" @click="nextPage"></div>
+         </div>
      </div>
  </div>
 </template>
@@ -21,6 +26,19 @@ global.ePub = Epub
       }
   },
   methods:{
+      //翻页
+      prevPage(){
+          //调用rendition.prev上一页
+          if(this.rendition){
+              this.rendition.prev();
+          }
+      },
+      nextPage(){
+          //调用rendition.next下一页
+          if(this.rendition){
+              this.rendition.next();
+          }
+      },
       //电子书的解析和渲染
       showEpub(){
           //1.生成book对象
@@ -47,6 +65,32 @@ global.ePub = Epub
 
 <style lang='scss' scoped>
 @import 'assets/styles/global';
-
+.ebook{
+    position: relative;
+    .read-wrapper{
+        .mask{
+            position: absolute;
+            top:0;
+            left:0;
+            z-index:100;
+            display:flex;
+            width: 100%;
+            height: 100%;
+            // background: yellow;
+            .left{
+                flex: 0 0 px2rem(100);
+                // background-color: red;
+            }
+            .center{
+                flex: 1;
+                // background-color: orange;
+            }
+            .right{
+                flex: 0 0 px2rem(100);
+                // background-color: blue;
+            }
+        }
+    }
+}
  
 </style>
