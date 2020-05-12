@@ -17,6 +17,7 @@
              </div>
          </div>
      </div>
+     <!-- 内容 -->
      <div class="read-wrapper">
          <!-- 电子书固定在此id上 -->
          <div id="read"></div>
@@ -25,6 +26,21 @@
              <div class="left" @click="prevPage"></div>
              <div class="center"></div>
              <div class="right" @click="nextPage"></div>
+         </div>
+     </div>
+     <!-- 底部栏 -->
+     <div class="menu-wrapper">
+         <div class="icon-wrapper">
+             <span class="icon-menu icon"></span>
+         </div>
+         <div class="icon-wrapper">
+             <span class="icon-progress icon"></span>
+         </div>
+         <div class="icon-wrapper">
+             <span class="icon-bright icon"></span>
+         </div>
+         <div class="icon-wrapper">
+             <span class="icon-a icon">A</span>
          </div>
      </div>
  </div>
@@ -136,6 +152,29 @@ global.ePub = Epub
             .right{
                 flex: 0 0 px2rem(100);
                 // background-color: blue;
+            }
+        }
+    }
+    .menu-wrapper{
+        position: absolute;
+        left:0;
+        bottom: 0;
+        z-index: 101;
+        display: flex;
+        width:100%;
+        // justify-content: space-between;
+        background-color: white;
+        height: px2rem(48);
+        // 设置向上阴影
+        box-shadow: 0 px2rem(-8) px2rem(8) rgba(0, 0, 0, .15);
+        .icon-wrapper{
+            flex:1;
+            @include center;
+            .icon-progress {
+                font-size: px2rem(28);
+            }
+            .icon-bright {
+                font-size: px2rem(24);
             }
         }
     }
