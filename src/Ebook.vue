@@ -14,7 +14,10 @@
          </div>
      </div>
      <!-- 底部 -->
-    <menu-bar :ifTitleAndMenuShow = "ifTitleAndMenuShow"></menu-bar>
+    <menu-bar ref="menuBar" :ifTitleAndMenuShow = "ifTitleAndMenuShow"
+                :fontSizeList = "fontSizeList"
+                :defaultFontSize = "defaultFontSize"
+    ></menu-bar>
      
  </div>
 </template>
@@ -31,7 +34,17 @@ global.ePub = Epub
   name: 'Ebook',
   data(){
       return{
-          ifTitleAndMenuShow: false
+          ifTitleAndMenuShow: false,
+          fontSizeList:[
+              {fontSize: 12},
+              {fontSize: 14},
+              {fontSize: 16},
+              {fontSize: 18},
+              {fontSize: 20},
+              {fontSize: 22},
+              {fontSize: 24}
+          ],
+          defaultFontSize: 16
       }
   },
   components:{
@@ -41,7 +54,9 @@ global.ePub = Epub
   methods:{
       //点击中间内容区域则触发点击事件显示菜单栏
       toggleTitleAndMenu(){
-          this.ifTitleAndMenuShow = !this.ifTitleAndMenuShow
+          this.ifTitleAndMenuShow = !this.ifTitleAndMenuShow,
+        //   调用子级函数
+          this.$refs.menuBar.hideSetting();
       },
       //翻页
       prevPage(){
