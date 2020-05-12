@@ -1,5 +1,22 @@
 <template>
  <div class="ebook">
+     <!-- 标题栏 -->
+     <div class="title-wrapper">
+         <div class="left">
+             <span class="icon-back icon"></span>
+         </div>
+         <div class="right">
+             <div class="icon-wrapper">
+                 <span class="icon-cart icon"></span>
+             </div>
+             <div class="icon-wrapper">
+                 <span class="icon-person icon"></span>
+             </div>
+             <div class="icon-wrapper">
+                 <span class="icon-more icon"></span>
+             </div>
+         </div>
+     </div>
      <div class="read-wrapper">
          <!-- 电子书固定在此id上 -->
          <div id="read"></div>
@@ -67,6 +84,37 @@ global.ePub = Epub
 @import 'assets/styles/global';
 .ebook{
     position: relative;
+    .title-wrapper{
+        position: absolute;
+        top:0;
+        left:0;
+        width: 100%;
+        z-index: 101;//层级越大在上面
+        display: flex;
+        height: px2rem(48);
+        background-color: white;
+        // 设置阴影
+        box-shadow: 0 px2rem(8) px2rem(8) rgba(0, 0, 0, .15);
+        .left{
+            flex: 0 0 px2rem(60);
+            // 居中
+            @include center;
+        }
+        .right{
+            display: flex;
+            flex:1;
+            // 居右排列
+            justify-content: flex-end;
+            .icon-wrapper{
+                flex: 0 0 px2rem(40);
+                // 居中
+                @include center;
+                .icon-cart {
+                    font-size: px2rem(22);
+                }
+            }
+        }
+    }
     .read-wrapper{
         .mask{
             position: absolute;
