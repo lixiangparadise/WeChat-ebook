@@ -18,6 +18,9 @@
                 :fontSizeList = "fontSizeList"
                 :defaultFontSize = "defaultFontSize"
                 @setFontSize = "setFontSize"
+                :themeList = "themeList"
+                :defaultTheme = "defaultTheme"
+                @setTheme = "setTheme"
     ></menu-bar>
      
  </div>
@@ -45,7 +48,43 @@ global.ePub = Epub
               {fontSize: 22},
               {fontSize: 24}
           ],
-          defaultFontSize: 16
+          defaultFontSize: 16,
+          //主题
+          themeList: [
+            {
+            name: 'default',
+            style: {
+                body: {
+                'color': '#000', 'background': '#fff'
+                }
+            }
+            },
+            {
+            name: 'eye',
+            style: {
+                body: {
+                'color': '#000', 'background': '#ceeaba'
+                }
+            }
+            },
+            {
+            name: 'night',
+            style: {
+                body: {
+                'color': '#fff', 'background': '#000'
+                }
+            }
+            },
+            {
+            name: 'gold',
+            style: {
+                body: {
+                'color': '#000', 'background': 'rgb(241, 236, 226)'
+                }
+            }
+            }
+        ],
+        defaultTheme: 0
       }
   },
   components:{
@@ -53,6 +92,16 @@ global.ePub = Epub
       TitleBar
   },
   methods:{
+      setTheme(index){
+          this.themes.select(this.themeList[index].name);
+          this.defaultTheme = index; //保存主题
+      },
+      //注册主题
+      registerTheme(){
+          this.themeList.forEach(theme=>{
+              this.themes.register(theme.name, theme.style)
+          })
+      },
       setFontSize(fs){
           this.defaultFontSize = fs;
           if(this.themes){
@@ -98,6 +147,13 @@ global.ePub = Epub
           this.themes = this.rendition.themes
           //设置默认字体
           this.setFontSize(this.defaultFontSize)
+          //this.themes.register(theme name, theme style) 将主题注册到对象中
+          //this.select(theme name) 通过主题名字修改
+          //注册主题
+          this.registerTheme();
+          //   this.themes.select('night');
+          // 设置默认主题
+          this.setTheme(this.defaultTheme);
       }
   },
   mounted(){
