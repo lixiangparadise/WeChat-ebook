@@ -21,6 +21,8 @@
                 :themeList = "themeList"
                 :defaultTheme = "defaultTheme"
                 @setTheme = "setTheme"
+                :bookAvailable = "bookAvailable"
+                @onProgressChange = "onProgressChange"
     ></menu-bar>
      
  </div>
@@ -84,7 +86,9 @@ global.ePub = Epub
             }
             }
         ],
-        defaultTheme: 0
+        defaultTheme: 0,
+        //图书是否处于可用状态
+        bookAvailable:false
       }
   },
   components:{
@@ -92,6 +96,13 @@ global.ePub = Epub
       TitleBar
   },
   methods:{
+      //progress进度条的数值(0-100)
+      onProgressChange(progress){
+          const percentage = progress/100;
+          //页数
+          const location = percentage>0 ? this.locations.cfiFromPercentage(percentage):0;
+          this.rendition.display(location);
+      },
       setTheme(index){
           this.themes.select(this.themeList[index].name);
           this.defaultTheme = index; //保存主题
@@ -154,6 +165,17 @@ global.ePub = Epub
           //   this.themes.select('night');
           // 设置默认主题
           this.setTheme(this.defaultTheme);
+          //通过epubjs的钩子函数实现获取Locations对象
+          //Location对象默认不加载
+          this.book.ready.then(()=>{
+              //生成Locations对象
+              return this.book.locations.generate();
+          }).then(result=>{
+              //保存locations对象
+              this.locations = this.book.locations;
+              //标记电子书为解析完成状态
+              this.bookAvailable = true;
+          })
       }
   },
   mounted(){

@@ -8,7 +8,7 @@
                 <span class="icon-menu icon"></span>
             </div>
             <div class="icon-wrapper">
-                <span class="icon-progress icon"></span>
+                <span class="icon-progress icon" @click="showSetting(2)"></span>
             </div>
             <div class="icon-wrapper">
                 <span class="icon-bright icon" @click="showSetting(1)"></span>
@@ -52,7 +52,26 @@
                     <div class="text" :class="{'selected': index===defaultTheme}">{{item.name}}</div>
                 </div>
             </div>
-            
+
+            <!-- 进度条 -->
+            <div class="setting-progress" v-show="showTag===2">
+                <div class="progress-wrapper">
+                    <!-- 进度条 -->
+                    <!-- $event.target.value 获取当前文本框的值 -->
+                    <input type="range" class="progress"
+                    max="100" min="0" step="1"
+                    @change="onProgressChange($event.target.value)"
+                    @input="onProgressInput($event.target.value)"
+                    :value="progress"
+                    :disabled = "!bookAvailable"
+                    ref="progress"
+                    />
+                    
+                </div>
+                <div class="text-wrapper">
+                    <span>{{bookAvailable ? progress+'%' : '加载中...'}}</span>
+                </div>
+            </div>
         </div>
      </transition>
   </div>
@@ -70,15 +89,28 @@ export default {
         },
         defaultFontSize: Number,
         themeList: Array,
-        defaultTheme: Number
+        defaultTheme: Number,
+        bookAvailable: Boolean
     },
     data(){
         return{
             ifSettingShow: false,
-            showTag: 0
+            showTag: 0,
+            progress:0
         }
     },
     methods:{
+        //进度条松开后出啊发事件，根据进度条数值跳转到指定位置
+        onProgressChange(progress){
+            this.$emit('onProgressChange', progress);
+        },
+        //拖动进度条时触发事件
+        onProgressInput(progress){
+            this.progress = progress;
+            // 设置两个百分数分别对应.progress.background-size的两个参数
+            this.$refs.progress.style.backgroundSize = `${this.progress}% 100%`
+        },
+        //设置主题
         setTheme(index){
             //调用父类的方法并且传递参数
             this.$emit('setTheme', index);
@@ -240,7 +272,48 @@ export default {
                 }
             }
         }
-
+        .setting-progress{
+            position: relative;
+            height:100%;
+            width: 100%;
+            .progress-wrapper{
+               height:100%; 
+                width: 100%;
+                @include center;
+                padding: 0 px2rem(30);
+                box-sizing: border-box;
+                .progress{
+                    width: 100%;
+                    //改变浏览器默认风格
+                    -webkit-appearance: none;
+                    height: px2rem(2);
+                    background: -webkit-linear-gradient(#999, #999) no-repeat,  #ddd;
+                    background-size: 0 100%;
+                    &:focus {
+                        outline: none;
+                    }
+                    // 设置range滑块的具体样式 中间的圆形
+                    &::-webkit-slider-thumb {
+                        -webkit-appearance: none;
+                        height: px2rem(20);
+                        width: px2rem(20);
+                        border-radius: 50%;
+                        background: white;
+                        box-shadow: 0 4px 4px 0 rgba(0, 0, 0, .15);
+                        border: px2rem(1) solid #ddd;
+                    }
+                }
+            }
+            .text-wrapper{
+                position: absolute;
+                left:0;
+                bottom: 0;
+                width: 100%;
+                color: #333;
+                font-size:px2rem(12);
+                text-align: center;
+            }
+        }
 
 
 
