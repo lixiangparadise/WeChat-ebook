@@ -5,7 +5,7 @@
         <div class="menu-wrapper" :class="{'hide-box-shadow': ifSettingShow || !ifTitleAndMenuShow}"
         v-show="ifTitleAndMenuShow">
             <div class="icon-wrapper">
-                <span class="icon-menu icon"></span>
+                <span class="icon-menu icon" @click="showSetting(3)"></span>
             </div>
             <div class="icon-wrapper">
                 <span class="icon-progress icon" @click="showSetting(2)"></span>
@@ -74,10 +74,24 @@
             </div>
         </div>
      </transition>
+
+     <!-- content -->
+     <content-view v-show="ifShowContent" 
+                   :navigation="navigation" 
+                   :bookAvailable = "bookAvailable"
+                   @jumpTo="jumpTo"></content-view>
+     <!-- 蒙版 -->
+     <transition name="fade">
+        <div class="content-mask"
+            v-show = "ifShowContent"
+            @click="hideContent"></div>
+     </transition>
   </div>
 </template>
 
 <script>
+//引入contentvuew
+import ContentView from '@/components/ContentView'
 export default {
     props:{
         ifTitleAndMenuShow:{
@@ -90,16 +104,26 @@ export default {
         defaultFontSize: Number,
         themeList: Array,
         defaultTheme: Number,
-        bookAvailable: Boolean
+        bookAvailable: Boolean,
+        navigation: Object
     },
     data(){
         return{
             ifSettingShow: false,
             showTag: 0,
-            progress:0
+            progress:0,
+            ifShowContent: false
         }
     },
     methods:{
+        //跳转方法调用父组件方法
+        jumpTo(href){
+            this.$emit('jumpTo', href);
+        },
+        //隐藏目录
+        hideContent(){
+            this.ifShowContent = false;
+        },
         //进度条松开后出啊发事件，根据进度条数值跳转到指定位置
         onProgressChange(progress){
             this.$emit('onProgressChange', progress);
@@ -115,9 +139,16 @@ export default {
             //调用父类的方法并且传递参数
             this.$emit('setTheme', index);
         },
+        //显示设置面板
         showSetting(tag){
-            this.ifSettingShow = true
             this.showTag=tag
+            if(this.showTag===3){
+                this.ifSettingShow = false;
+                this.ifShowContent = true;
+            }
+            else{
+                this.ifSettingShow = true
+            }
         },
         hideSetting(){
             this.ifSettingShow = false
@@ -127,6 +158,9 @@ export default {
         setFontSize(fs){
             this.$emit('setFontSize', fs)
         }
+    },
+    components:{
+        ContentView
     }
 }
 </script>
@@ -318,7 +352,16 @@ export default {
 
 
     }
-    
+    .content-mask{
+        position: absolute;
+        top:0;
+        left:0;
+        z-index:101;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        background: rgba(51, 51, 51, .8);
+    }
 }
     
 

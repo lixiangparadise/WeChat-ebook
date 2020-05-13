@@ -23,6 +23,8 @@
                 @setTheme = "setTheme"
                 :bookAvailable = "bookAvailable"
                 @onProgressChange = "onProgressChange"
+                :navigation="navigation"
+                @jumpTo="jumpTo"
     ></menu-bar>
      
  </div>
@@ -85,10 +87,11 @@ global.ePub = Epub
                 }
             }
             }
-        ],
+          ],
         defaultTheme: 0,
         //图书是否处于可用状态
-        bookAvailable:false
+        bookAvailable:false,
+        navigation: {}
       }
   },
   components:{
@@ -96,6 +99,20 @@ global.ePub = Epub
       TitleBar
   },
   methods:{
+      //根据连接跳转到指定位置
+      jumpTo(href){
+          this.rendition.display(href);
+          //跳转到链接后的同时隐藏标题栏和菜单栏
+          this.hideTitleAndMenu();
+      },
+      hideTitleAndMenu(){
+          //隐层标题栏和菜单栏
+          this.ifTitleAndMenuShow = false;
+          //隐藏菜单栏弹出的设置栏
+          this.$refs.menuBar.hideSetting();
+          //隐藏目录
+          this.$refs.menuBar.hideContent();
+      },
       //progress进度条的数值(0-100)
       onProgressChange(progress){
           const percentage = progress/100;
@@ -168,6 +185,8 @@ global.ePub = Epub
           //通过epubjs的钩子函数实现获取Locations对象
           //Location对象默认不加载
           this.book.ready.then(()=>{
+              //   目录
+              this.navigation = this.book.navigation;
               //生成Locations对象
               return this.book.locations.generate();
           }).then(result=>{
